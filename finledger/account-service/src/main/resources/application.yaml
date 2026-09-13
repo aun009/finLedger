@@ -1,0 +1,41 @@
+server:
+  port: 8081
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+spring:
+  application:
+    name: account-service
+
+  datasource:
+    url: ${ACCOUNT_DB_URL:jdbc:postgresql://localhost:5432/finledger?currentSchema=account}
+    username: ${ACCOUNT_DB_USERNAME:arun}
+    password: ${ACCOUNT_DB_PASSWORD:1212}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+  flyway:
+    table: account_flyway_history
+    schemas: account
+    default-schema: account
+
+security:
+  jwt:
+    secret: ${JWT_SECRET:finledger-development-jwt-secret-change-this-value-32}
+    expiration: ${JWT_EXPIRATION:15m}
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:5173,http://127.0.0.1:5173,http://localhost:5174,http://127.0.0.1:5174}
